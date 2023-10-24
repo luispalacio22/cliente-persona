@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Getter
 @ToString
 @AllArgsConstructor
-@Builder
 @NoArgsConstructor
 @Entity
 @Table(name = "cliente")
