@@ -11,7 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-
+@MappedSuperclass
 public class Persona {
     private String nombre;
     private String genero;
