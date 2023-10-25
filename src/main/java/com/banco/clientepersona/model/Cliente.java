@@ -2,6 +2,7 @@ package com.banco.clientepersona.model;
 
 
 import lombok.*;
+
 import javax.persistence.*;
 
 
