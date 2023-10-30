@@ -1,11 +1,13 @@
 package com.banco.clientepersona.service;
 
+import com.banco.clientepersona.dto.ClienteDTO;
 import com.banco.clientepersona.model.Cliente;
 import com.banco.clientepersona.repository.ClienteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,12 +17,19 @@ public class ClienteServiceImpl implements ClienteService{
     private final ClienteRepository clienteRepository;
 
     @Override
-    public Cliente createCliente(Cliente cliente) {
-        return clienteRepository.save(cliente);
+    public ClienteDTO createCliente(Cliente cliente) {
+        clienteRepository.save(cliente);
+        ClienteDTO clienteDTO = new ClienteDTO();
+        clienteDTO.setNombre(cliente.getNombre());
+        clienteDTO.setDireccion(cliente.getDireccion());
+        clienteDTO.setTelefono(cliente.getTelefono());
+        clienteDTO.setContrasena(cliente.getContrasena());
+        clienteDTO.setEstado(cliente.isEstado());
+        return clienteDTO;
     }
 
     @Override
-    public Cliente updateCliente(Long clienteId, Cliente cliente) {
+    public ClienteDTO updateCliente(Long clienteId, Cliente cliente) {
         Cliente clienteExistente = clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado con el ID: " + clienteId));
         clienteExistente.setContrasena(cliente.getContrasena());
@@ -31,7 +40,12 @@ public class ClienteServiceImpl implements ClienteService{
         clienteExistente.setIdentificacion(cliente.getIdentificacion());
         clienteExistente.setDireccion(cliente.getDireccion());
         clienteExistente.setTelefono(cliente.getTelefono());
-        return clienteRepository.save(clienteExistente);
+        clienteRepository.save(clienteExistente);
+        return ClienteDTO.builder().nombre(clienteExistente.getNombre())
+                .direccion(clienteExistente.getDireccion())
+                .telefono(clienteExistente.getTelefono())
+                .contrasena(clienteExistente.getContrasena())
+                .estado(cliente.isEstado()).build();
     }
 
     @Override
@@ -42,13 +56,32 @@ public class ClienteServiceImpl implements ClienteService{
     }
 
     @Override
-    public List<Cliente> getAllClientes() {
-        return clienteRepository.findAll();
+    public List<ClienteDTO> getAllClientes() {
+        List<Cliente> list = clienteRepository.findAll();
+        List<ClienteDTO> newList = new ArrayList<>();
+        for (Cliente cliente: list){
+            ClienteDTO clienteDTO = new ClienteDTO();
+            clienteDTO.setNombre(cliente.getNombre());
+            clienteDTO.setDireccion(cliente.getDireccion());
+            clienteDTO.setTelefono(cliente.getTelefono());
+            clienteDTO.setContrasena(cliente.getContrasena());
+            clienteDTO.setEstado(cliente.isEstado());
+            newList.add(clienteDTO);
+        }
+        return newList;
     }
 
     @Override
-    public Cliente getClienteById(Long clienteId) {
-        return clienteRepository.findById(clienteId)
+    public ClienteDTO getClienteById(Long clienteId) {
+        Cliente cliente =  clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado con el ID: " + clienteId));
+
+        ClienteDTO clienteDTO = new ClienteDTO();
+        clienteDTO.setNombre(cliente.getNombre());
+        clienteDTO.setDireccion(cliente.getDireccion());
+        clienteDTO.setTelefono(cliente.getTelefono());
+        clienteDTO.setContrasena(cliente.getContrasena());
+        clienteDTO.setEstado(cliente.isEstado());
+        return clienteDTO;
     }
 }

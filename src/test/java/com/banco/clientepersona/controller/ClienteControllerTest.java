@@ -1,5 +1,6 @@
 package com.banco.clientepersona.controller;
 
+import com.banco.clientepersona.dto.ClienteDTO;
 import com.banco.clientepersona.model.Cliente;
 import com.banco.clientepersona.service.ClienteService;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,23 +30,23 @@ class ClienteControllerTest {
 
     @Test
     public void testGetAllClientes() {
-        List<Cliente> clientes = new ArrayList<>();
-        clientes.add(new Cliente(1L, "Cliente 2",  true));
-        clientes.add(new Cliente(2L, "Cliente 2",  true));
+        List<ClienteDTO> clientes = new ArrayList<>();
+        clientes.add(new ClienteDTO("Luis", "Cliente 2","q","123",  true));
+        clientes.add(new ClienteDTO("Luis", "Cliente 2","q","123",  true));
 
         Mockito.when(clienteService.getAllClientes()).thenReturn(clientes);
 
-        ResponseEntity<List<Cliente>> response = clienteController.getAllClientes();
+        ResponseEntity<List<ClienteDTO>> response = clienteController.getAllClientes();
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(clientes, response.getBody());
     }
     @Test
     public void testGetClienteById() {
-        Cliente cliente = new Cliente(1L, "Cliente 1", true);
+        ClienteDTO cliente = new ClienteDTO("Luis", "Cliente 2","q","123",  true);
 
         Mockito.when(clienteService.getClienteById(1L)).thenReturn(cliente);
 
-        ResponseEntity<Cliente> response = clienteController.getClienteById(1L);
+        ResponseEntity<ClienteDTO> response = clienteController.getClienteById(1L);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(cliente, response.getBody());
@@ -54,25 +55,27 @@ class ClienteControllerTest {
     @Test
     public void testCreateCliente() {
         Cliente nuevoCliente = new Cliente(null, "Nuevo Cliente",  true);
+        ClienteDTO cliente = new ClienteDTO("Luis", "Cliente 2","q","123",  true);
 
-        Mockito.when(clienteService.createCliente(nuevoCliente)).thenReturn(nuevoCliente);
+        Mockito.when(clienteService.createCliente(nuevoCliente)).thenReturn(cliente);
 
-        ResponseEntity<Cliente> response = clienteController.createCliente(nuevoCliente);
+        ResponseEntity<ClienteDTO> response = clienteController.createCliente(nuevoCliente);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(nuevoCliente, response.getBody());
+        assertEquals(cliente, response.getBody());
     }
 
     @Test
     public void testUpdateCliente() {
         Cliente clienteActualizado = new Cliente(1L, "Cliente Actualizado",  true);
+        ClienteDTO cliente = new ClienteDTO("Luis", "Cliente 2","q","123",  true);
 
-        Mockito.when(clienteService.updateCliente(1L, clienteActualizado)).thenReturn(clienteActualizado);
+        Mockito.when(clienteService.updateCliente(1L, clienteActualizado)).thenReturn(cliente);
 
-        ResponseEntity<Cliente> response = clienteController.updateCliente(1L, clienteActualizado);
+        ResponseEntity<ClienteDTO> response = clienteController.updateCliente(1L, clienteActualizado);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(clienteActualizado, response.getBody());
+        assertEquals(cliente, response.getBody());
     }
 
     @Test

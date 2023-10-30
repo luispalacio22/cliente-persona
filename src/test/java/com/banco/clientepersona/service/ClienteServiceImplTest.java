@@ -1,5 +1,6 @@
 package com.banco.clientepersona.service;
 
+import com.banco.clientepersona.dto.ClienteDTO;
 import com.banco.clientepersona.model.Cliente;
 import com.banco.clientepersona.repository.ClienteRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +34,7 @@ public class ClienteServiceImplTest {
 
         Mockito.when(clienteRepository.save(Mockito.any(Cliente.class))).thenReturn(cliente);
 
-        Cliente nuevoCliente = clienteService.createCliente(cliente);
+        ClienteDTO nuevoCliente = clienteService.createCliente(cliente);
         assert nuevoCliente != null;
     }
 
@@ -44,7 +45,7 @@ public class ClienteServiceImplTest {
         Mockito.when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
         Mockito.when(clienteRepository.save(Mockito.any(Cliente.class))).thenReturn(cliente);
 
-        Cliente clienteActualizado = clienteService.updateCliente(1L, cliente);
+        ClienteDTO clienteActualizado = clienteService.updateCliente(1L, cliente);
         assert clienteActualizado != null;
     }
 
@@ -63,7 +64,7 @@ public class ClienteServiceImplTest {
 
         Mockito.when(clienteRepository.findAll()).thenReturn(clientes);
 
-        List<Cliente> result = clienteService.getAllClientes();
+        List<ClienteDTO> result = clienteService.getAllClientes();
         assert !result.isEmpty();
     }
 
@@ -72,7 +73,7 @@ public class ClienteServiceImplTest {
         Cliente cliente = new Cliente(1L, "Cliente 1", true);
 
         Mockito.when(clienteRepository.findById(1L)).thenReturn(Optional.of(cliente));
-        Cliente result = clienteService.getClienteById(1L);
+        ClienteDTO result = clienteService.getClienteById(1L);
         assert result != null;
     }
 }
